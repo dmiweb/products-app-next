@@ -18,4 +18,4 @@
 - **React Hook Form** - управление формами
 - **Zod** - Валидация схем
 
-GitHub Page - https://dmiweb.github.io/product-list/
+GitHub Page - https://dmiweb.github.io/products-app-next/
