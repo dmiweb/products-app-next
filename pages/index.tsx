@@ -28,8 +28,13 @@ export default function Home() {
   useEffect(() => {
     if (products.length === 0) {
       fetchData(
-        'https://dummyjson.com/products?limit=100', 
-        {headers: {"Origin": "https://dmiweb.github.io/products-app-next/"}});
+        'https://cors-anywhere.herokuapp.com/https://dummyjson.com/products?limit=100',
+        {
+          headers: { 
+            "Origin": "https://dmiweb.github.io/products-app-next/"
+            // "Origin": "http://localhost:3000/" 
+          }
+        });
     } else {
       setPagination(1, 9);
     }
@@ -38,7 +43,7 @@ export default function Home() {
   useEffect(() => {
     if (data) {
       setProducts(data.products);
-      setPagination(pagination.page, pagination.limit, data.total);
+      setPagination(pagination.page, pagination.limit, data.products.length);
     }
   }, [data]);
 
