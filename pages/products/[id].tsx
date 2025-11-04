@@ -5,6 +5,7 @@ import { TProduct } from "@/types";
 import { Button } from "@/components/ui/button";
 import { ProductCardDetailed } from "@/components/products/ProductCardDetailed";
 import { ArrowBigLeft } from "lucide-react"
+import { notFound } from "next/navigation";
 
 export default function ProductPage() {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function ProductPage() {
   if (!product) {
     return (
       <div className="flex flex-col items-center gap-4 p-8">
-        <h1>Товар не найдена</h1>
+        <h1>Товар не найден</h1>
         <Button
           variant="outline"
           size="lg"
