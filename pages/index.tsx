@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { useProductStore } from "@/store/useProductStore";
 import { useFetchData } from "@/hooks/useFetchData";
 import { TProductsResponse } from "@/types";
-import { ProductList } from "@/components/products/ProductList";
 import { Button } from "@/components/ui/button";
+import { ProductList } from "@/components/products/ProductList";
 import { ProductFilter } from "@/components/products/ProductFilter";
 import { ProductPagination } from "@/components/products/ProductPagination";
+import { Loader } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,8 +37,17 @@ export default function Home() {
     }
   }, [data]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) {
+    return (
+      <div className='absolute left-2/4 top-1/3 transform -translate-x-1/2'>
+        <Loader className='animate-spin' />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className='absolute left-2/4 top-1/3 transform -translate-x-1/2'>{error}</div>
+  }
 
   return (
     <>

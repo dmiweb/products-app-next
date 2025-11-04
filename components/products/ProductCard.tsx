@@ -1,12 +1,13 @@
+import { useState } from 'react';
 import Link from 'next/link'
 import { useProductStore } from "@/store/useProductStore";
-import { cn } from "@/lib/utils";
 import { TProduct } from '@/types';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from "../ui/button";
 import { HeartIcon, Trash2Icon } from "lucide-react"
-import { useState } from 'react';
+import { cn } from "@/lib/utils";
+
 
 type ProductCardProps = {
   product: TProduct,
@@ -35,10 +36,8 @@ export function ProductCard({ product, isFavorite }: ProductCardProps) {
     <Link href={`/products/${product.id}`}>
       <Card className={cn(
         "cursor-pointer hover:shadow-lg transition-shadow group",
-        "transition-all duration-600 ease-in",
-        isDeleting
-          ? "opacity-0 scale-10 translate-x-48 -translate-y-80 rotate-360"
-          : "opacity-100 scale-100 translate-x-0 translate-y-0 rotate-0"
+        "transition-all duration-700 ease",
+        isDeleting && "animate-delete"
       )}>
 
       <CardHeader className="relative">

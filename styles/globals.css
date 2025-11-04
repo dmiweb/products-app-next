@@ -44,8 +44,6 @@ a {
   }
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -102,7 +100,10 @@ a {
   }
 }
 
-
+.animate-delete {
+  opacity: 0;
+  transform: scale(0.1) translateX(20rem) translateY(-100rem) rotate(360deg);
+}
 
 @layer base {
   * {
