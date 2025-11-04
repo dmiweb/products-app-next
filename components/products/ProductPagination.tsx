@@ -97,7 +97,7 @@ export function ProductPagination() {
         {/* Кнопка "Вперед" */}
         <PaginationNext
           className={
-            page === 1
+            page === totalPages
               ? "pointer-events-none opacity-50"
               : "cursor-pointer hover:bg-secondary"
           }
