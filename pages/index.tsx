@@ -60,7 +60,7 @@ export default function Home() {
 
           <div>
             <h1>Our Products</h1>
-            <div className="products-grid">
+            <div className="bg-gray-200">
               {products.map(product => (
                 <Link key={product.id} href={`/products/${product.id}`}>
                   <div className="product-card">
