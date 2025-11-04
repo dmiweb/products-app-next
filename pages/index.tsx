@@ -23,7 +23,9 @@ export default function Home() {
   const { data, loading, error, fetchData } = useFetchData<TProductsResponse>();
 
   useEffect(() => {
-    fetchData('https://jsonexamples.com/products?limit=100');
+    if (products.length === 0) {
+      fetchData('https://jsonexamples.com/products?limit=100');
+    }
   }, []);
 
   useEffect(() => {

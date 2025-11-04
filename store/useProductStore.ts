@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { TProduct } from "@/types";
 
 interface ProductState {
@@ -20,7 +21,7 @@ interface ProductState {
   selectFilter: (filter: 'all' | 'favorites') => void
 }
 
-export const useProductStore = create<ProductState>((set, get) => ({
+export const useProductStore = create(persist<ProductState>((set, get) => ({
   products: [],
   pagination: {
     total: 0,
@@ -71,4 +72,6 @@ export const useProductStore = create<ProductState>((set, get) => ({
   selectFilter: (filter) => {
     set({ filter })
   }
-}))
+}),
+  { name: 'PRODUCT-APP-NEXT-KEY' }
+));
