@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  basePath: "/products-app-next",
+  output: "export",
   reactStrictMode: true,
 };
 
