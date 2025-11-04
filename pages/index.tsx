@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { useProductStore } from "@/store/useProductStore";
 import { useFetchData } from "@/hooks/useFetchData";
-import { TProductsResponse, TProduct } from "@/types";
+import { TProductsResponse} from "@/types";
 import styles from "@/styles/Home.module.css";
 
 const geistSans = Geist({
@@ -22,12 +22,8 @@ export default function Home() {
   const { products, setProducts } = useProductStore();
   const { data, loading, error, fetchData } = useFetchData<TProductsResponse>();
 
-  // const [products, setProducts] = useState<TProduct[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState('');
-
   useEffect(() => {
-    fetchData('https://jsonexamples.com/products?limit=6');
+    fetchData('https://jsonexamples.com/products?limit=100');
   }, []);
 
   useEffect(() => {
@@ -35,26 +31,6 @@ export default function Home() {
       setProducts(data.products);
     }
   }, [data]);
-
-  // const loadProducts = async () => {
-  //   try {
-  //     setLoading(true);
-  //     // Замени на твой реальный API endpoint
-  //     const response = await fetch('https://jsonexamples.com/products?limit=6');
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to fetch products');
-  //     }
-
-  //     const data = await response.json();
-  //     setProducts(data.products);
-  //   } catch (err) {
-  //     setError('Error loading products');
-  //     console.error(err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
