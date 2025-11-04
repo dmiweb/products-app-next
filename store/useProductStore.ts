@@ -18,6 +18,7 @@ interface ProductState {
   createProduct: (product: TProduct) => void,
   deleteProduct: (id: number) => void,
   toggleFavorite: (product: TProduct) => void,
+  clearFavorites: () => void,
   selectFilter: (filter: 'all' | 'favorites') => void
 }
 
@@ -76,6 +77,9 @@ export const useProductStore = create(persist<ProductState>((set, get) => ({
     favorites: state.favorites.some(fav => fav.id === product.id)
       ? state.favorites.filter(fav => fav.id !== product.id)
       : [...state.favorites, product]
+  })),
+  clearFavorites: () => set(() => ({
+    favorites: []
   })),
   selectFilter: (filter) => {
     set({ filter })

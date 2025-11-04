@@ -37,11 +37,12 @@ export function ProductCard({ product, isFavorite }: ProductCardProps) {
       <Card className={cn(
         "cursor-pointer hover:shadow-lg transition-shadow group",
         "transition-all duration-700 ease",
-        isDeleting && "animate-delete"
+        isDeleting && "animate-delete",
+        "animate-in fade-in duration-500"
       )}>
 
       <CardHeader className="relative">
-        <CardTitle className="line-clamp-1">{product.title}</CardTitle>
+        <CardTitle className="text-lg line-clamp-1">{product.title}</CardTitle>
         <CardDescription className="min-h-[2.5rem] break-words line-clamp-2">
           {product.description}
         </CardDescription>

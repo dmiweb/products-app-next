@@ -1,11 +1,8 @@
 import { useRouter } from "next/router";
-import { useState, useEffect, useMemo } from "react";
 import { useProductStore } from "@/store/useProductStore";
-import { TProduct } from "@/types";
 import { Button } from "@/components/ui/button";
 import { ProductCardDetailed } from "@/components/products/ProductCardDetailed";
 import { ArrowBigLeft } from "lucide-react"
-import { notFound } from "next/navigation";
 
 export default function ProductPage() {
   const router = useRouter();
@@ -14,9 +11,7 @@ export default function ProductPage() {
   const { favorites, getProduct, toggleFavorite, deleteProduct } = useProductStore();
   const isFavorite = favorites.some(fav => fav.id === Number(id));
 
-  const product = useMemo(() => {
-    return getProduct(Number(id));
-  }, [id]);
+  const product = getProduct(Number(id));
 
   if (!product) {
     return (

@@ -23,7 +23,7 @@ export function ProductCardDetailed({
 
   return (
     <div className="flex flex-col items-center gap-3 w-[600px] mx-auto p-4">
-      <Card>
+      <Card className="animate-in fade-in duration-500">
         <CardHeader className="relative">
           <CardTitle className="text-2xl line-clamp-1">{product.title}</CardTitle>
           <CardDescription className="text-lg break-all">

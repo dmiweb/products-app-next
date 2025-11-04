@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { useProductStore } from "@/store/useProductStore";
 import {
@@ -14,6 +15,13 @@ export function ProductPagination() {
   const { pagination, setPagination } = useProductStore();
   const { page, limit, total } = pagination;
   const totalPages = Math.ceil(total / limit);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, [pagination.page]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage < 1 || newPage > totalPages) return;
