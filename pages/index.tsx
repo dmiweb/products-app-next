@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ProductList } from "@/components/products/ProductList";
 import { ProductFilter } from "@/components/products/ProductFilter";
 import { ProductPagination } from "@/components/products/ProductPagination";
-import { Loader } from "lucide-react";
+import { Loader, SquarePlus } from "lucide-react";
 
 export default function Home() {
   const { products, favorites, filter, pagination, setProducts, setPagination, getPaginatedProducts, clearFavorites } = useProductStore();
@@ -64,14 +64,14 @@ export default function Home() {
 
       <div className="flex min-h-screen items-center justify-center bg-zinc-50">
         <main className="flex flex-col p-4 min-h-screen w-full max-w-6xl bg-white">
-          <h1 className={"mb-4 text-center text-4xl"}>
+          <h1 className={"mb-4 text-center text-4xl text-zinc-800"}>
             Список продуктов
           </h1>
 
           <div className='flex justify-between px-4'>
             <Link href="/products/create">
-              <Button variant="outline" className='cursor-pointer'>
-                {/* <SquarePlus /> */}
+              <Button variant="outline" className='text-lg text-zinc-800 font-normal cursor-pointer'>
+                <SquarePlus />
                 Добавить продукт
               </Button>
             </Link>
