@@ -7,11 +7,11 @@ export default function ProductPage() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { products } = useProductStore();
+  const { getProduct } = useProductStore();
 
   const product = useMemo(() => {
-    return products.find((p) => p.id === Number(id));
-  }, [products, id]);
+    return getProduct(Number(id));
+  }, [id]);
 
   if (!product) {
     return <div>Product not found</div>;

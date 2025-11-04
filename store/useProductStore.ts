@@ -13,13 +13,14 @@ interface ProductState {
   filter: 'all' | 'favorites',
   setProducts: (products: TProduct[]) => void,
   setPagination: (total: number, skip: number, limit: number, page: number) => void,
+  getProduct: (id: number) => TProduct | undefined,
   createProduct: (product: TProduct) => void,
   deleteProduct: (id: number) => void,
   toggleFavorite: (product: TProduct) => void,
   selectFilter: (filter: 'all' | 'favorites') => void
 }
 
-export const useProductStore = create<ProductState>((set) => ({
+export const useProductStore = create<ProductState>((set, get) => ({
   products: [],
   pagination: {
     total: 0,
@@ -45,6 +46,10 @@ export const useProductStore = create<ProductState>((set) => ({
       }
     });
   },
+  getProduct: (id: number) => {
+    const state = get();
+    return state.products.find(p => p.id === id);
+  },
   createProduct: (product) => {
     set((state) => ({
       products: [product, ...state.products],
@@ -58,11 +63,11 @@ export const useProductStore = create<ProductState>((set) => ({
       favorites: state.favorites.filter(fav => fav.id !== id),
     }));
   },
-toggleFavorite: (product) => set((state) => ({
-  favorites: state.favorites.some(fav => fav.id === product.id)
-    ? state.favorites.filter(fav => fav.id !== product.id)
-    : [...state.favorites, product]
-})),
+  toggleFavorite: (product) => set((state) => ({
+    favorites: state.favorites.some(fav => fav.id === product.id)
+      ? state.favorites.filter(fav => fav.id !== product.id)
+      : [...state.favorites, product]
+  })),
   selectFilter: (filter) => {
     set({ filter })
   }
