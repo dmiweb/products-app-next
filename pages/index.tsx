@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import styles from "@/styles/Home.module.css";
 
@@ -13,7 +15,56 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export type TProduct =  {
+  id: number,
+  title?: string,
+  description?: string,
+  price?: number,
+  thumbnail?: string,
+  category?: string,
+  isFavorite?: boolean,
+}
+
+export type TProductsResponse = {
+  products: TProduct[],
+  total: number,
+  skip: number,
+  limit: number,
+};
+
 export default function Home() {
+
+  const [products, setProducts] = useState<TProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = async () => {
+    try {
+      setLoading(true);
+      // Замени на твой реальный API endpoint
+      const response = await fetch('https://jsonexamples.com/products?limit=100');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+
+      const data = await response.json();
+      setProducts(data.products);
+    } catch (err) {
+      setError('Error loading products');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <>
       <Head>
@@ -34,53 +85,22 @@ export default function Home() {
             height={20}
             priority
           />
-          <div className={styles.intro}>
-            <h1>To get started, edit the index.tsx file.</h1>
-            <p>
-              Looking for a starting point or more instructions? Head over to{" "}
-              <a
-                href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Templates
-              </a>{" "}
-              or the{" "}
-              <a
-                href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Learning
-              </a>{" "}
-              center.
-            </p>
+
+          <div>
+            <h1>Our Products</h1>
+            <div className="products-grid">
+              {products.map(product => (
+                <Link key={product.id} href={`/products/${product.id}`}>
+                  <div className="product-card">
+                    <img src={product.thumbnail} alt={product.title} />
+                    <h3>{product.title}</h3>
+                    <p>${product.price}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-          <div className={styles.ctas}>
-            <a
-              className={styles.primary}
-              href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Image
-                className={styles.logo}
-                src="/products-app-next/vercel.svg"
-                alt="Vercel logomark"
-                width={16}
-                height={16}
-              />
-              Deploy Now
-            </a>
-            <a
-              className={styles.secondary}
-              href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Documentation
-            </a>
-          </div>
+
         </main>
       </div>
     </>
