@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { useProductStore } from "@/store/useProductStore";
-import { TProduct } from "@/types";
+import { useFetchData } from "@/hooks/useFetchData";
+import { TProductsResponse, TProduct } from "@/types";
 import styles from "@/styles/Home.module.css";
 
 const geistSans = Geist({
@@ -18,35 +19,42 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
-  const {products, setProducts} = useProductStore();
+  const { products, setProducts } = useProductStore();
+  const { data, loading, error, fetchData } = useFetchData<TProductsResponse>();
 
   // const [products, setProducts] = useState<TProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState('');
 
   useEffect(() => {
-    loadProducts();
+    fetchData('https://jsonexamples.com/products?limit=6');
   }, []);
 
-  const loadProducts = async () => {
-    try {
-      setLoading(true);
-      // Замени на твой реальный API endpoint
-      const response = await fetch('https://jsonexamples.com/products?limit=6');
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch products');
-      }
-
-      const data = await response.json();
+  useEffect(() => {
+    if (data) {
       setProducts(data.products);
-    } catch (err) {
-      setError('Error loading products');
-      console.error(err);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [data]);
+
+  // const loadProducts = async () => {
+  //   try {
+  //     setLoading(true);
+  //     // Замени на твой реальный API endpoint
+  //     const response = await fetch('https://jsonexamples.com/products?limit=6');
+
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch products');
+  //     }
+
+  //     const data = await response.json();
+  //     setProducts(data.products);
+  //   } catch (err) {
+  //     setError('Error loading products');
+  //     console.error(err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
