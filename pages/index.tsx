@@ -3,6 +3,8 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import { useProductStore } from "@/store/useProductStore";
+import { TProduct } from "@/types";
 import styles from "@/styles/Home.module.css";
 
 const geistSans = Geist({
@@ -15,26 +17,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export type TProduct =  {
-  id: number,
-  title?: string,
-  description?: string,
-  price?: number,
-  thumbnail?: string,
-  category?: string,
-  isFavorite?: boolean,
-}
-
-export type TProductsResponse = {
-  products: TProduct[],
-  total: number,
-  skip: number,
-  limit: number,
-};
-
 export default function Home() {
+  const {products, setProducts} = useProductStore();
 
-  const [products, setProducts] = useState<TProduct[]>([]);
+  // const [products, setProducts] = useState<TProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -46,7 +32,7 @@ export default function Home() {
     try {
       setLoading(true);
       // Замени на твой реальный API endpoint
-      const response = await fetch('https://jsonexamples.com/products?limit=100');
+      const response = await fetch('https://jsonexamples.com/products?limit=6');
 
       if (!response.ok) {
         throw new Error('Failed to fetch products');
