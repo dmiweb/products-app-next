@@ -5,8 +5,9 @@ import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { useProductStore } from "@/store/useProductStore";
 import { useFetchData } from "@/hooks/useFetchData";
-import { TProductsResponse} from "@/types";
+import { TProductsResponse } from "@/types";
 import styles from "@/styles/Home.module.css";
+import { ProductList } from "@/components/products/ProductList";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +20,7 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
-  const { products, setProducts } = useProductStore();
+  const { products, favorites, filter, setProducts } = useProductStore();
   const { data, loading, error, fetchData } = useFetchData<TProductsResponse>();
 
   useEffect(() => {
@@ -49,30 +50,36 @@ export default function Home() {
         className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}
       >
         <main className={styles.main}>
-          <Image
-            className={styles.logo}
-            src="/products-app-next/next.svg"
-            alt="Next.js logo"
-            width={100}
-            height={20}
-            priority
-          />
+          <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+            <main className="flex flex-col p-4 min-h-screen w-full max-w-6xl bg-white dark:bg-black">
+              <h1 className="text-center text-4xl">Список продуктов</h1>
 
-          <div>
-            <h1>Our Products</h1>
-            <div className="bg-gray-200">
-              {products.map(product => (
-                <Link key={product.id} href={`/products/${product.id}`}>
-                  <div className="product-card">
-                    <img src={product.thumbnail} alt={product.title} />
-                    <h3>{product.title}</h3>
-                    <p>${product.price}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+              <div className='flex justify-between px-4'>
+                {/* <Link href="/products/create">
+            <Button variant="outline" className='cursor-pointer'>
+              <SquarePlus />
+              Добавить продукт
+            </Button>
+          </Link>
+
+          <ProductFilter /> */}
+              </div>
+
+              {/* {products.length */}
+              <ProductList
+                products={products}
+                favorites={favorites}
+                filter={filter}
+              />
+              {/* : null} */}
+
+              {/* {pagination.total > 0 && (
+          <div className='self-center mt-auto p-4'>
+            {filter === "all" && <ProductPagination />}
           </div>
-
+        )} */}
+            </main>
+          </div>
         </main>
       </div>
     </>

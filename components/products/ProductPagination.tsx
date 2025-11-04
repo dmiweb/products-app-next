@@ -1,0 +1,138 @@
+import { useState } from "react";
+import { useProductStore } from "@/store/useProductStore";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+
+export function ProductPagination() {
+  const { pagination, setPagination } = useProductStore();
+  const [currentPage, setCurrentPage] = useState<number>(pagination.page);
+
+  // Вычисляем общее количество страниц
+  const totalPages = Math.ceil(pagination.total / pagination.limit);
+
+  // Функция для изменения страницы
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages || page === currentPage) return;
+
+    const skip = (page - 1) * pagination.limit;
+    setCurrentPage(page);
+
+    // Экшен для сохранения данных пагинации
+    setPagination(pagination.total, skip, pagination.limit, page);
+  };
+
+  // Функция для генерации номеров страниц
+  const getPageNumbers = () => {
+    const pages = [];
+    const showEllipsis = totalPages > 7;
+
+    if (!showEllipsis) {
+      // Показываем все страницы если их мало
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        // Показываем: 1 2 3 4  ... last
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('ellipsis');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        // Показываем: 1 ...  last-3 last-2 last-1 last
+        pages.push(1);
+        pages.push('ellipsis');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // Показываем: 1 ... current-1 current current+1 ... last
+        pages.push(1);
+        pages.push('ellipsis');
+        pages.push(currentPage - 1);
+        pages.push(currentPage);
+        pages.push(currentPage + 1);
+        pages.push('ellipsis');
+        pages.push(totalPages);
+      }
+    }
+
+    return pages;
+  };
+
+  // Если страница всего одна, не показываем пагинацию
+  if (totalPages <= 1) return null;
+
+  const pageNumbers = getPageNumbers();
+
+  return (
+    <Pagination>
+      <PaginationContent>
+        {/* Кнопка "Назад" */}
+        <PaginationItem>
+          <PaginationPrevious
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handlePageChange(currentPage - 1);
+            }}
+            className={
+              currentPage === 1
+                ? "pointer-events-none opacity-50"
+                : "cursor-pointer hover:bg-secondary"
+            }
+          />
+        </PaginationItem>
+
+        {/* Номера страниц */}
+        {pageNumbers.map((page, index) => (
+          <PaginationItem key={index}>
+            {page === 'ellipsis' ? (
+              <PaginationEllipsis />
+            ) : (
+              <PaginationLink
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePageChange(page as number);
+                }}
+                isActive={currentPage === page}
+                className={
+                  currentPage === page
+                    ? "bg-primary text-primary-foreground"
+                    : "cursor-pointer hover:bg-secondary"
+                }
+              >
+                {page}
+              </PaginationLink>
+            )}
+          </PaginationItem>
+        ))}
+
+        {/* Кнопка "Вперед" */}
+        <PaginationItem>
+          <PaginationNext
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              handlePageChange(currentPage + 1);
+            }}
+            className={
+              currentPage === totalPages
+                ? "pointer-events-none opacity-50"
+                : "cursor-pointer hover:bg-secondary"
+            }
+          />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  );
+}
