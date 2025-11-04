@@ -68,7 +68,7 @@ export default function Home() {
             Список продуктов
           </h1>
 
-          <div className='flex justify-between px-4'>
+          <div className='flex justify-between flex-wrap px-4'>
             <Link href="/products/create">
               <Button variant="outline" className='text-lg text-zinc-800 font-normal cursor-pointer'>
                 <SquarePlus />
