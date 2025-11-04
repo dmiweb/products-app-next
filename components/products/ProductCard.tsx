@@ -5,7 +5,7 @@ import { TProduct } from '@/types';
 import { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from "../ui/button";
-// import { HeartIcon, Trash2Icon } from "lucide-react"
+import { HeartIcon, Trash2Icon } from "lucide-react"
 import { useState } from 'react';
 
 type ProductCardProps = {
@@ -50,10 +50,10 @@ export function ProductCard({ product, isFavorite }: ProductCardProps) {
           variant="ghost"
           size="icon"
           aria-label="Удалить товар"
-          className="absolute -top-5 right-1 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          className="absolute top-0 right-1 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200"
           onClick={handleDelete}
         >
-          {/* <Trash2Icon /> */}
+          <Trash2Icon />
         </Button>
       </CardHeader>
 
@@ -81,9 +81,9 @@ export function ProductCard({ product, isFavorite }: ProductCardProps) {
           className="cursor-pointer"
           onClick={handleToggleFavorite}
         >
-          {/* <HeartIcon
+          <HeartIcon
             className={cn("size-4.5", isFavorite && "fill-red-500 text-red-500")}
-          /> */}
+          />
         </Button>
       </CardFooter>
     </Card>

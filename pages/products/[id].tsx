@@ -2,28 +2,46 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useMemo } from "react";
 import { useProductStore } from "@/store/useProductStore";
 import { TProduct } from "@/types";
+import { Button } from "@/components/ui/button";
+import { ProductCardDetailed } from "@/components/products/ProductCardDetailed";
+import { ArrowBigLeft } from "lucide-react"
 
 export default function ProductPage() {
   const router = useRouter();
   const { id } = router.query;
 
-  const { getProduct } = useProductStore();
+  const { favorites, getProduct, toggleFavorite, deleteProduct } = useProductStore();
+  const isFavorite = favorites.some(fav => fav.id === Number(id));
 
   const product = useMemo(() => {
     return getProduct(Number(id));
   }, [id]);
 
   if (!product) {
-    return <div>Product not found</div>;
+    return (
+      <div className="flex flex-col items-center gap-4 p-8">
+        <h1>Товар не найдена</h1>
+        <Button
+          variant="outline"
+          size="lg"
+          aria-label="Назад к списку товаров"
+          className="cursor-pointer"
+          onClick={() => router.push('/')}
+        >
+          <ArrowBigLeft />
+          Назад
+        </Button>
+      </div>
+    )
   }
 
   return (
-    <div>
-      <div className="product-card">
-        <img src={product.thumbnail} alt={product.title} />
-        <h3>{product.title}</h3>
-        <p>${product.price}</p>
-      </div>
-    </div>
+    <ProductCardDetailed
+      product={product}
+      isFavorite={isFavorite}
+      toggleFavorite={toggleFavorite}
+      deleteProduct={deleteProduct}
+      onBack={() => router.back()}
+    />
   );
 }
