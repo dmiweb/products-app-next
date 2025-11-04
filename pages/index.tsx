@@ -27,7 +27,9 @@ export default function Home() {
 
   useEffect(() => {
     if (products.length === 0) {
-      fetchData('https://dummyjson.com/products?limit=100');
+      fetchData(
+        'https://dummyjson.com/products?limit=100', 
+        {headers: {"Origin": "https://dmiweb.github.io/products-app-next/"}});
     } else {
       setPagination(1, 9);
     }

@@ -4,7 +4,7 @@ type FetchResult<T> = {
   data: T | null;
   loading: boolean;
   error: string | null;
-  fetchData: (url: string) => void;
+  fetchData: (url: string, opts?:RequestInit) => void;
 };
 
 export const useFetchData = <T>(): FetchResult<T> => {
