@@ -22,20 +22,25 @@ const geistMono = Geist_Mono({
 });
 
 export default function Home() {
-  const { products, favorites, filter, pagination, setProducts } = useProductStore();
+  const { products, favorites, filter, pagination, setProducts, setPagination, getPaginatedProducts } = useProductStore();
   const { data, loading, error, fetchData } = useFetchData<TProductsResponse>();
 
   useEffect(() => {
     if (products.length === 0) {
-      fetchData('https://jsonexamples.com/products?limit=100');
+      fetchData('https://dummyjson.com/products?limit=100');
+    } else {
+      setPagination(1, 9);
     }
   }, []);
 
   useEffect(() => {
     if (data) {
       setProducts(data.products);
+      setPagination(pagination.page, pagination.limit, data.total);
     }
   }, [data]);
+
+  const currentProducts = getPaginatedProducts();
 
   if (loading) {
     return (
@@ -77,13 +82,13 @@ export default function Home() {
 
           {products.length
             ? <ProductList
-              products={products}
+              products={currentProducts}
               favorites={favorites}
               filter={filter}
             />
             : null}
 
-          {pagination.total > 0 && (
+          {pagination.total > pagination.limit && (
             <div className='self-center mt-auto p-4'>
               {filter === "all" && <ProductPagination />}
             </div>

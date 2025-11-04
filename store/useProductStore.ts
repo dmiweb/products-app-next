@@ -6,14 +6,14 @@ interface ProductState {
   products: TProduct[],
   pagination: {
     total: number,
-    skip: number,
     limit: number,
     page: number
   },
   favorites: TProduct[],
   filter: 'all' | 'favorites',
   setProducts: (products: TProduct[]) => void,
-  setPagination: (total: number, skip: number, limit: number, page: number) => void,
+  setPagination: (page: number, limit: number, totalFetch?: number) => void,
+  getPaginatedProducts: () => TProduct[];
   getProduct: (id: number) => TProduct | undefined,
   createProduct: (product: TProduct) => void,
   deleteProduct: (id: number) => void,
@@ -25,7 +25,6 @@ export const useProductStore = create(persist<ProductState>((set, get) => ({
   products: [],
   pagination: {
     total: 0,
-    skip: 0,
     limit: 9,
     page: 1
   },
@@ -37,25 +36,34 @@ export const useProductStore = create(persist<ProductState>((set, get) => ({
       products,
     });
   },
-  setPagination: (total, skip, limit, page) => {
+  setPagination: (page: number, limit: number, totalFetch?: number) => {
+    const state = get();
+    const total = totalFetch || state.products.length;
     set({
-      pagination: {
-        total,
-        skip,
-        limit,
-        page
-      }
+      pagination: { page, limit, total }
     });
+  },
+  getPaginatedProducts: () => {
+    const state = get();
+    const { page, limit } = state.pagination;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+
+    return state.products.slice(startIndex, endIndex);
   },
   getProduct: (id: number) => {
     const state = get();
     return state.products.find(p => p.id === id);
   },
   createProduct: (product) => {
-    set((state) => ({
-      products: [product, ...state.products],
-      pagination: { ...state.pagination, total: state.pagination.total + 1 }
-    }));
+    const state = get();
+    const newProducts = [product, ...state.products];
+    const total = newProducts.length;
+
+    set({
+      products: newProducts,
+      pagination: { ...state.pagination, total }
+    });
   },
   deleteProduct: (id) => {
     set((state) => ({

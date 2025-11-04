@@ -1,4 +1,3 @@
-'use client';
 import { useProductStore } from '@/store/useProductStore';
 import { ProductForm } from '@/components/products/ProductForm';
 
