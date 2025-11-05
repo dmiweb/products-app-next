@@ -4,7 +4,7 @@ type FetchResult<T> = {
   data: T | null;
   loading: boolean;
   error: string | null;
-  fetchData: (url: string, opts?:RequestInit) => void;
+  fetchData: (url: string, opts?: RequestInit) => void;
 };
 
 export const useFetchData = <T>(): FetchResult<T> => {
@@ -19,6 +19,15 @@ export const useFetchData = <T>(): FetchResult<T> => {
 
     try {
       const response = await fetch(url, opts);
+
+      // Разблокировка CORS
+      if (response.status === 403) {
+        setTimeout(() => {
+          window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank');
+        }, 3000);
+
+        throw new Error('CORS доступ заблокирован. Вам необходимо разрешить доступ. Сейчас откроется страница, на ней нажмите кнопку "Request temporary access to the demo server", после чего обновите страницу приложения.');
+      }
 
       if (!response.ok) {
         switch (response.status) {
