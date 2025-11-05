@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useProductStore } from "@/store/useProductStore";
 import { useFetchData } from "@/hooks/useFetchData";
 import { TProductsResponse } from "@/types";
+import { CorsActivate } from "@/components/cors-active/CorsActivate";
 import { Button } from "@/components/ui/button";
 import { ProductList } from "@/components/products/ProductList";
 import { ProductFilter } from "@/components/products/ProductFilter";
@@ -50,6 +51,7 @@ export default function Home() {
   }
 
   if (error) {
+    if(error.includes('CORS')) return <CorsActivate />
     return <div className='absolute left-2/4 top-1/3 transform -translate-x-1/2'>{error}</div>
   }
 
