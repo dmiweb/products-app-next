@@ -21,11 +21,7 @@ export const useFetchData = <T>(): FetchResult<T> => {
       const response = await fetch(url, opts);
 
       // Разблокировка CORS
-      if (response.status) {
-        // setTimeout(() => {
-        //   window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_top');
-        // }, 5000);
-
+      if (response.status === 403) {
         throw new Error('CORS доступ заблокирован. Вам необходимо разрешить доступ. Сейчас откроется страница, на ней нажмите кнопку "Request temporary access to the demo server", запросы начнут работать.');
       }
 
